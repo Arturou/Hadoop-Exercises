@@ -1,0 +1,36 @@
+Start Cloudera quick start
+Open a terminal - CLI
+
+Create a diectory in HDFS if it doesn't exist already for ex:
+
+hadoop fs -mkdir /user/cloudera/flume/
+
+Check the created directory
+
+hadoop fs -ls /user/cloudera/
+
+Go to location : /usr/lib/flume-ng/conf
+Copy the attached netcat.conf
+change to bin dir under /usr/lig/flume-ng
+Run the command:
+./flume-ng agent --conf conf --conf-file ../conf/netcat.conf  --name netcatagent -Dflume.root.logger=INFO.console
+
+See the log being generated on the termial, wait for below line to appear
+
+"source.NetcatSource: Created serverSocket:sun.nio.ch.ServerSocketChannelImpl[/127.0.0.1:56565]"
+
+Then Open a new terminal 
+Type telnet localhost 56565
+
+it creates a connection to that port
+
+Now type something " hi this is a test" and press enter
+
+Check the other terminal window to see if you can see hdfs write statements. Once done, do Ctl+C in both windows
+
+And now go check HDFS to see if Flume transferred content to HDFS:
+
+hadoop fs -ls /user/cloudera/flume/
+and cat the generated file for ex: 
+hadoop fs -text /user/cloudera/flume/FlumeData.1525645542038
+
